@@ -1,7 +1,6 @@
 const { Builder, By } = require("selenium-webdriver");
 const assert = require("assert");
-const chrome = require('selenium-webdriver/chrome'); // Ensure chrome is imported
-const conf_file = process.argv[3] || "conf/single.cond.js";
+const conf_file = process.argv[3] || "conf/single.conf.js";
 const { capabilities } = require("../" + conf_file);
 const {Select} = require('selenium-webdriver')
 
@@ -28,11 +27,9 @@ describe("Mocha Todo Test " + capabilities.browserName, function () {
     driver = buildDriver();
   });
 
-  // it("check for mobileye title " + capabilities.browserName, async function () {
-  //   await driver.get("https://www.mobileye.com");
-  //   mobileye_title = await driver.getTitle();
-  //   assert.strictEqual(mobileye_title, "Mobileye | Driver Assist and Autonomous Driving Technologies", "wrong title");
-  // });
+  it("check for mobileye title " + capabilities.browserName, async function () {
+    await testTitle(driver);
+  });
 
   it("testing contact page in " + capabilities.browserName, async function () {
     await testContactPage(driver);
@@ -64,4 +61,10 @@ async function testContactPage(driver) {
   await driver.sleep(2000);
   thank_you_title = await driver.getTitle();
   assert.strictEqual(thank_you_title, "Thank You", "wrong title");
+}
+
+async function testTitle(driver) {
+  await driver.get("https://www.mobileye.com");
+  mobileye_title = await driver.getTitle();
+  assert.strictEqual(mobileye_title, "Mobileye | Driver Assist and Autonomous Driving Technologies", "wrong title");
 }
