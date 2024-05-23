@@ -34,7 +34,7 @@ capabilities.forEach((caps) => {
       driver = buildDriver(caps);
     });
 
-    it("check for mobileye title" + capabilities.browserName, async function () {
+    it("check for mobileye title" + caps.browserName, async function () {
       await driver.get("https://www.mobileye.com");
       mobileye_title = await driver.getTitle();
       assert.strictEqual(mobileye_title, "Mobileye | Driver Assist and Autonomous Driving Technologies", "wrong title");
