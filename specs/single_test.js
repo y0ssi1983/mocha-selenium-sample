@@ -1,58 +1,49 @@
-var assert = require("assert"),
-  webdriver = require("selenium-webdriver"),
-  conf_file = process.argv[3] || "conf/single.conf.js";
+const assert = require("assert");
+const { Builder, By } = require("selenium-webdriver");
+const conf_file = process.argv[3] || "conf/single.conf.js";
 
-var caps = require("../" + conf_file).capabilities;
+const { capabilities } = require("../" + conf_file);
 
-var buildDriver = function(caps) {
-  return new webdriver.Builder()
+const buildDriver = (caps) => {
+  return new Builder()
     .usingServer(
       "http://" +
-      LT_USERNAME +
+      process.env.LT_USERNAME +
       ":" +
-      LT_ACCESS_KEY +
+      process.env.LT_ACCESS_KEY +
       "@hub.lambdatest.com/wd/hub"
     )
     .withCapabilities(caps)
     .build();
 };
 
-describe("Mocha Todo Test " + caps.browserName, function() {
-  var driver;
+describe("Mocha Todo Test " + capabilities.browserName, function () {
+  let driver;
   this.timeout(0);
 
-  beforeEach(function(done) {
-    caps.name = this.currentTest.title;
-    driver = buildDriver(caps);
-    done();
+  beforeEach(async function () {
+    capabilities.name = this.currentTest.title;
+    driver = buildDriver(capabilities);
   });
 
-  it("can find search results", function(done) {
-    driver.get("https://lambdatest.github.io/sample-todo-app/").then(function() {
-        driver.findElement(webdriver.By.name('li1')).click().then(function(){
-            console.log("Successfully clicked first list item.");
-        });
+  it("can find search results " + capabilities.browserName, async function () {
+    await driver.get("https://lambdatest.github.io/sample-todo-app/");
+    await driver.findElement(By.name('li1')).click();
+    console.log("Successfully clicked first list item.");
 
-        driver.findElement(webdriver.By.name('li2')).click().then(function(){
-            console.log("Successfully clicked second list item.");
-          });
+    await driver.findElement(By.name('li2')).click();
+    console.log("Successfully clicked second list item.");
 
-        driver.findElement(webdriver.By.id('sampletodotext')).sendKeys('Complete Lambdatest Tutorial\n').then(function(){
-            driver.findElement(webdriver.By.id('addbutton')).click().then(function(){
-                console.log("Successfully added a new task.");
-            })
-        });
-    });
+    await driver.findElement(By.id('sampletodotext')).sendKeys('Complete Lambdatest Tutorial\n');
+    await driver.findElement(By.id('addbutton')).click();
+    console.log("Successfully added a new task.");
   });
 
-  afterEach(function(done) {
-    if (this.currentTest.isPassed()) {
-      driver.executeScript("lambda-status=passed");
-    } else {
-      driver.executeScript("lambda-status=failed");
+  afterEach(async function () {
+    try {
+      await driver.executeScript("lambda-status=" + (this.currentTest.state === 'passed' ? "passed" : "failed"));
+    } finally {
+      await driver.quit();
     }
-    driver.quit().then(function() {
-      done();
-    });
   });
 });
