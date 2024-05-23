@@ -6,29 +6,29 @@ const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "<your accessKey>";
 
 const config = {
   commonCapabilities: {
-    build: "Mocha-Selenium-Sample", // Build name
-    tunnel: false, // Make it true to run the localhost through tunnel
+    build: "Mocha-Selenium-Parallel-Tesing",
+    tunnel: false,
     user: LT_USERNAME,
     accessKey: LT_ACCESS_KEY
   },
   multiCapabilities: [
     {
-      name: "Your Test Name - Firefox", // Test name
-      platform: "Windows 10", // OS name
+      name: "Your Test Name - Firefox",
+      platform: "Windows 10",
       browserName: "firefox",
       version: "latest",
-      visual: false, // To take step by step screenshot
-      network: false, // To capture network Logs
-      console: false // To capture console logs.
+      visual: false,
+      network: false,
+      console: false
     },
     {
-      name: "Your Test Name - Chrome", // Test name
-      platform: "Windows 11", // OS name
+      name: "Your Test Name - Chrome",
+      platform: "Windows 11",
       browserName: "chrome",
       version: "75.0",
-      visual: false, // To take step by step screenshot
-      network: false, // To capture network Logs
-      console: false // To capture console logs.
+      visual: false,
+      network: false,
+      console: false
     }
   ]
 };

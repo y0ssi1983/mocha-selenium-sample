@@ -5,7 +5,7 @@ const LT_USERNAME = process.env.LT_USERNAME || "<your username>";
 const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "<your accessKey>";
 
 exports.capabilities = {
-  'build': 'Mocha-Selenium-Testing',
+  'build': 'Mocha-Selenium-Single-Testing',
   'name': 'Yossi',
   'platform': 'Windows 11',
   'browserName': 'chrome',
