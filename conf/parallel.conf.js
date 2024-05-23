@@ -6,7 +6,7 @@ const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "<your accessKey>";
 
 const config = {
   commonCapabilities: {
-    build: "Mocha-Selenium-Parallel-Tesing",
+    build: "Mobileye-Parallel-Tesing",
     tunnel: false,
     user: LT_USERNAME,
     accessKey: LT_ACCESS_KEY

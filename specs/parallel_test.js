@@ -34,17 +34,10 @@ capabilities.forEach((caps) => {
       driver = buildDriver(caps);
     });
 
-    it("can find search results " + caps.browserName, async function () {
-      await driver.get("https://lambdatest.github.io/sample-todo-app/");
-      await driver.findElement(By.name('li1')).click();
-      console.log("Successfully clicked first list item.");
-
-      await driver.findElement(By.name('li2')).click();
-      console.log("Successfully clicked second list item.");
-
-      await driver.findElement(By.id('sampletodotext')).sendKeys('Complete Lambdatest Tutorial\n');
-      await driver.findElement(By.id('addbutton')).click();
-      console.log("Successfully added a new task.");
+    it("check for mobileye title" + capabilities.browserName, async function () {
+      await driver.get("https://www.mobileye.com");
+      mobileye_title = await driver.getTitle();
+      assert.strictEqual(mobileye_title, "Mobileye | Driver Assist and Autonomous Driving Technologies", "wrong title");
     });
 
     afterEach(async function () {
