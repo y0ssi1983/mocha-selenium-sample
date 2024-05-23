@@ -1,19 +1,20 @@
-const assert = require("assert");
 const { Builder, By } = require("selenium-webdriver");
-const conf_file = process.argv[3] || "conf/single.conf.js";
-
+const assert = require("assert");
+const chrome = require('selenium-webdriver/chrome'); // Ensure chrome is imported
+const conf_file = process.argv[3] || "conf/single.cond.js";
 const { capabilities } = require("../" + conf_file);
 
-const buildDriver = (caps) => {
+const LT_USERNAME = capabilities.user;
+const LT_ACCESS_KEY = capabilities.accessKey;
+const gridUrl = `https://${LT_USERNAME}:${LT_ACCESS_KEY}@hub.lambdatest.com/wd/hub`;
+
+const buildDriver = () => {
   return new Builder()
-    .usingServer(
-      "http://" +
-      process.env.LT_USERNAME +
-      ":" +
-      process.env.LT_ACCESS_KEY +
-      "@hub.lambdatest.com/wd/hub"
-    )
-    .withCapabilities(caps)
+    .usingServer(gridUrl)
+    .withCapabilities({
+      'LT:Options': capabilities,
+      'browserName': capabilities.browserName
+    })
     .build();
 };
 
@@ -23,7 +24,7 @@ describe("Mocha Todo Test " + capabilities.browserName, function () {
 
   beforeEach(async function () {
     capabilities.name = this.currentTest.title;
-    driver = buildDriver(capabilities);
+    driver = buildDriver();
   });
 
   it("can find search results " + capabilities.browserName, async function () {
@@ -40,10 +41,12 @@ describe("Mocha Todo Test " + capabilities.browserName, function () {
   });
 
   afterEach(async function () {
-    try {
-      await driver.executeScript("lambda-status=" + (this.currentTest.state === 'passed' ? "passed" : "failed"));
-    } finally {
-      await driver.quit();
+    if (driver) {
+      try {
+        await driver.executeScript("lambda-status=" + (this.currentTest.state === 'passed' ? "passed" : "failed"));
+      } finally {
+        await driver.quit();
+      }
     }
   });
 });
