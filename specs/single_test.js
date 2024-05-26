@@ -4,6 +4,8 @@ const conf_file = process.argv[3] || "conf/single.conf.js";
 const { capabilities } = require("../" + conf_file);
 const {Select} = require('selenium-webdriver')
 
+console.log("Capabilities:", capabilities);
+
 const LT_USERNAME = capabilities.user;
 const LT_ACCESS_KEY = capabilities.accessKey;
 const gridUrl = `https://${LT_USERNAME}:${LT_ACCESS_KEY}@hub.lambdatest.com/wd/hub`;

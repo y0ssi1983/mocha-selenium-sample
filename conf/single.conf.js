@@ -13,7 +13,8 @@ exports.capabilities = {
   'visual': true,
   'network': true,
   'console': true,
-  'tunnel': false,
+  'tunnel': true,
+  'tunnelName': 'MEWL16861',
   'user': LT_USERNAME,
   'accessKey': LT_ACCESS_KEY
 };
