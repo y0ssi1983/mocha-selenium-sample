@@ -17,18 +17,27 @@ const config = {
       platform: "Windows 10",
       browserName: "firefox",
       version: "latest",
-      visual: false,
-      network: false,
-      console: false
+      visual: true,
+      network: true,
+      console: true
     },
     {
       name: "Your Test Name - Chrome",
       platform: "Windows 11",
       browserName: "chrome",
-      version: "75.0",
-      visual: false,
-      network: false,
-      console: false
+      version: "latest",
+      visual: true,
+      network: true,
+      console: true
+    },
+    {
+      name: "Your Test Name - Edge",
+      platform: "Windows 11",
+      browserName: "edge",
+      version: "latest",
+      visual: true,
+      network: true,
+      console: true
     }
   ]
 };

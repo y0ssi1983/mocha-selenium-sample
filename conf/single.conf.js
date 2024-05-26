@@ -10,9 +10,9 @@ exports.capabilities = {
   'platform': 'Windows 11',
   'browserName': 'chrome',
   'version': 'latest',
-  'visual': false,
-  'network': false,
-  'console': false,
+  'visual': true,
+  'network': true,
+  'console': true,
   'tunnel': false,
   'user': LT_USERNAME,
   'accessKey': LT_ACCESS_KEY
