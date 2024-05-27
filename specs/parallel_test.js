@@ -26,7 +26,7 @@ const buildDriver = (caps) => {
 };
 
 capabilities.forEach((caps) => {
-  describe("Mocha Todo Test " + caps.browserName, function () {
+  describe("Test with Mocha in " + caps.browserName, function () {
     let driver;
     this.timeout(0);
 
@@ -42,6 +42,14 @@ capabilities.forEach((caps) => {
       const country = "Zambia";
       const what_best = "Other";
       await testContactPage(driver, firstname, lastname, email, country, what_best);
+    });
+
+    it("check for new contactUs page in " + caps.browserName, async function () {
+      const firstname = "test";
+      const lastname = "testing";
+      const email = "david2@mymail.com";
+      const country = "Zambia";
+      await testNewContactUs(driver, firstname, lastname, email, country);
     });
 
     afterEach(async function () {
@@ -68,6 +76,22 @@ async function testContactPage(driver, firstname, lastname, email, country, what
   const select_what = new Select(what_best_describes_you);
   await select_what.selectByValue(what_best);
   await driver.findElement(By.css(".submitBtn")).click();
+  await driver.sleep(2000);
+  thank_you_title = await driver.getTitle();
+  assert.strictEqual(thank_you_title, "Thank You", "wrong title");
+}
+
+async function testNewContactUs(driver, firstname, lastname, email, country) {
+  await driver.get("https://stage1.mbly.co/contact/");
+  await driver.findElement(By.css(".topicSelect")).click();
+  await driver.findElement(By.xpath('//*[@id="__layout"]/div/div/div[2]/div/div/div[2]/div/div/button[6]/p')).click();
+  await driver.findElement(By.id("firstname")).sendKeys(firstname);
+  await driver.findElement(By.id("lastname")).sendKeys(lastname);
+  country_dropdown = await driver.findElement(By.id("country"));
+  const select = new Select(country_dropdown);
+  await select.selectByValue(country);
+  await driver.findElement(By.id("email")).sendKeys(email);
+  await driver.findElement(By.xpath('//*[@id="__layout"]/div/div/div[2]/div/div/form/div[7]/button')).click();
   await driver.sleep(2000);
   thank_you_title = await driver.getTitle();
   assert.strictEqual(thank_you_title, "Thank You", "wrong title");

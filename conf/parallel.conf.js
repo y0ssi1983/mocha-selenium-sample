@@ -7,7 +7,8 @@ const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "<your accessKey>";
 const config = {
   commonCapabilities: {
     build: "Mobileye-Parallel-Tesing",
-    tunnel: false,
+    tunnel: true,
+    tunnelName: 'lambdatest-tunnel',
     user: LT_USERNAME,
     accessKey: LT_ACCESS_KEY
   },

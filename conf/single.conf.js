@@ -14,7 +14,7 @@ exports.capabilities = {
   'network': true,
   'console': true,
   'tunnel': true,
-  'tunnelName': 'MEWL16861',
+  'tunnelName': 'lambdatest-tunnel',
   'user': LT_USERNAME,
   'accessKey': LT_ACCESS_KEY
 };
