@@ -28,11 +28,11 @@ describe("Test with Mocha in " + capabilities.browserName, function () {
     driver = buildDriver();
   });
 
-  it("check for mobileye title " + capabilities.browserName, async function () {
+  it("check for mobileye title in " + capabilities.browserName + "browser", async function () {
     await testTitle(driver);
   });
 
-  it("testing contact page in " + capabilities.browserName, async function () {
+  it("testing contact page in " + capabilities.browserName + "browser", async function () {
     const firstname = "test";
     const lastname = "testing";
     const email = "david2@mymail.com";
@@ -41,7 +41,7 @@ describe("Test with Mocha in " + capabilities.browserName, function () {
     await testContactPage(driver, firstname, lastname, email, country, what_best);
   });
 
-  it("teting new contactUs page " + capabilities.browserName, async function() {
+  it("teting new contactUs page in " + capabilities.browserName + "browser", async function() {
     const firstname = "test";
     const lastname = "testing";
     const email = "david2@mymail.com";
