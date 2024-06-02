@@ -3,12 +3,20 @@ const assert = require("assert");
 const conf_file = process.argv[3] || "conf/single.conf.js";
 const { capabilities } = require("../" + conf_file);
 const {Select} = require('selenium-webdriver')
+const lambdaTunnel = require('@lambdatest/node-tunnel');
+
+const tunnelInstance = new lambdaTunnel();
 
 
 const LT_USERNAME = capabilities.user;
 const LT_ACCESS_KEY = capabilities.accessKey;
 const gridUrl = `https://${LT_USERNAME}:${LT_ACCESS_KEY}@hub.lambdatest.com/wd/hub`;
 
+const tunnelArguments = {
+  user: LT_USERNAME,
+  key: LT_ACCESS_KEY,
+  tunnelName: capabilities.tunnelName
+}
 
 const buildDriver = () => {
   return new Builder()
@@ -24,16 +32,40 @@ describe("Test with Mocha in " + capabilities.browserName, function () {
   let driver;
   this.timeout(0);
 
+  before(async function () {
+    // Start LambdaTest tunnel before running tests
+    try {
+      const isTunnelStarted = await tunnelInstance.start(tunnelArguments);
+      if (!isTunnelStarted) {
+        throw new Error('Tunnel could not be started');
+      }
+      console.log('Tunnel is running successfully');
+    } catch (error) {
+      console.error('Error starting tunnel:', error);
+      throw error;
+    }
+  });
+
+  after(async function () {
+    // Stop LambdaTest tunnel after all tests are done
+    try {
+      await tunnelInstance.stop();
+      console.log('Tunnel stopped successfully');
+    } catch (error) {
+      console.error('Error stopping tunnel:', error);
+    }
+  });
+
   beforeEach(async function () {
     capabilities.name = this.currentTest.title;
     driver = buildDriver();
   });
 
-  it("check for mobileye title in " + capabilities.browserName + "browser", async function () {
+  it("check for mobileye title in " + capabilities.browserName + " browser", async function () {
     await testTitle(driver);
   });
 
-  it("testing contact page in " + capabilities.browserName + "browser", async function () {
+  it("testing contact page in " + capabilities.browserName + " browser", async function () {
     const firstname = "test";
     const lastname = "testing";
     const email = "david2@mymail.com";
@@ -62,7 +94,7 @@ describe("Test with Mocha in " + capabilities.browserName, function () {
 });
 
 async function testTitle(driver) {
-  await driver.get("https://backoffice-stage.mbly.co/");
+  await driver.get("https://stage1.mbly.co/");
   mobileye_title = await driver.getTitle();
   assert.strictEqual(mobileye_title, "Mobileye | Driver Assist and Autonomous Driving Technologies", "wrong title");
 }
