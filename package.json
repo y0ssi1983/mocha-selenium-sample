@@ -5,6 +5,7 @@
   "scripts": {
     "test": "npm run single && npm run parallel",
     "single": "cross-env CONFIG_FILE=single ./node_modules/.bin/mocha specs/single_test_tunnel.js conf/single.conf.js",
+    "smartui": "cross-env CONFIG_FILE=single ./node_modules/.bin/mocha specs/smart-ui-test.js conf/single-smartui.conf.js",
     "parallel": "cross-env CONFIG_FILE=parallel ./node_modules/.bin/mocha specs/parallel_test.js conf/parallel.conf.js --timeout=100000"
   },
   "keywords": [
@@ -18,6 +19,7 @@
     "bluebird": "^3.7.2",
     "dotenv": "^16.4.5",
     "mocha": "^10.4.0",
+    "moment": "^2.30.1",
     "selenium-webdriver": "^4.20.0"
   },
   "devDependencies": {
